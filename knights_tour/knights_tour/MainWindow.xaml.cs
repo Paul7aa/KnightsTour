@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace knights_tour
+namespace Knights_Tour
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
