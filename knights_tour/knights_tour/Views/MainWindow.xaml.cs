@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Knights_Tour.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace Knights_Tour
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel dataContext;
         public MainWindow()
         {
+            dataContext = new MainWindowViewModel();
             InitializeComponent();
+            DataContext = dataContext;
         }
     }
 }
