@@ -8,5 +8,9 @@ namespace Knights_Tour.ViewModels
 {
     public partial class MainWindowViewModel
     {
+        public void StartAlgorithm()
+        {
+            IsExecuting = true;
+        }
     }
 }

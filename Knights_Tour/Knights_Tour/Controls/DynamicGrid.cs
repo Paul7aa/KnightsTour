@@ -30,7 +30,7 @@ namespace Knights_Tour.Controls
         private static void RowsColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
-            if (grid.RowsColumns > 10)
+            if (grid.RowsColumns > 11)
             {
                 grid.Width = grid.RowsColumns * 32.5;
                 grid.Height = grid.RowsColumns * 32.5;

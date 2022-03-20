@@ -38,7 +38,7 @@
             </Grid.ColumnDefinitions>
             <controls:DynamicGrid
             x:Name="chessBoard"
-            RowsColumns="{Binding ChessBoardSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+            RowsColumns="{Binding Path=ChessBoardSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
             Grid.Column="0"/>
 
         </Grid>
@@ -49,11 +49,16 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Row="1" Margin="30,0,0,0" Orientation="Horizontal">
+            <StackPanel Grid.Row="2" Margin="30,0,0,0" Orientation="Horizontal">
                 <TextBlock Text="Chess Board Size: " 
                                VerticalAlignment="Center"/>
                 <TextBox Width="100" Height="30" Margin="10,0,0,0"
@@ -70,10 +75,31 @@
                     </TextBox.Text>
                 </TextBox>
             </StackPanel>
-            <StackPanel Grid.Row="2" Margin="30,0,0,0" Orientation="Horizontal">
-                <TextBlock Text="Knight Position" VerticalAlignment="Center"/>
-
+            <StackPanel Grid.Row="3" Margin="30,0,0,0" Orientation="Horizontal">
+                <TextBlock Text="Knight's Position:" VerticalAlignment="Center"/>
             </StackPanel>
+            <StackPanel Grid.Row="4" Margin ="30,0,0,0" Orientation="Horizontal">
+                <TextBlock Text="Row:" VerticalAlignment="Center"></TextBlock>
+                <TextBox Width="50" Height="30" Margin="10,0,0,0"
+                         materialDesign:HintAssist.HelperTextFontSize="8">
+                    <materialDesign:HintAssist.Hint>
+                        <TextBlock Text="{Binding Path=RowHelperText,
+                            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    </materialDesign:HintAssist.Hint>
+                </TextBox>
+                <TextBlock Text="Column:" VerticalAlignment="Center"></TextBlock>
+                <TextBox Width="50" Height="30" Margin="10,0,0,0"
+                         materialDesign:HintAssist.HelperTextFontSize="8">
+                    <materialDesign:HintAssist.Hint>
+                        <TextBlock Text="{Binding Path=ColumnHelperText,
+                            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    </materialDesign:HintAssist.Hint>
+                </TextBox>
+            </StackPanel>
+            <Button Grid.Row="6" Width="150" Height="50"
+                    Content ="{Binding ExecuteButtonContent, UpdateSourceTrigger=PropertyChanged, Mode =TwoWay}"
+                    Background="{Binding ExecuteButtonColour, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    Command="{Binding StartAlgorithmCommand}"/>
         </Grid>
     </Grid>
 </Window>

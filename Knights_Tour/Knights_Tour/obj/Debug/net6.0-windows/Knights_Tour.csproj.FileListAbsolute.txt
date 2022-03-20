@@ -1,8 +1,3 @@
-D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.csproj.AssemblyReference.cache
-D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Views\MainWindow.g.cs
-D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour_MarkupCompile.cache
-D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour_MarkupCompile.lref
-D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\App.g.cs
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\bin\Debug\net6.0-windows\Knights_Tour.exe
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\bin\Debug\net6.0-windows\Knights_Tour.deps.json
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\bin\Debug\net6.0-windows\Knights_Tour.runtimeconfig.json
@@ -10,6 +5,12 @@ D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\bin\Debug\net6.0-windows
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\bin\Debug\net6.0-windows\Knights_Tour.pdb
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\bin\Debug\net6.0-windows\MaterialDesignColors.dll
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\bin\Debug\net6.0-windows\MaterialDesignThemes.Wpf.dll
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.csproj.AssemblyReference.cache
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Views\MainWindow.g.cs
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\App.g.cs
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour_MarkupCompile.cache
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour_MarkupCompile.lref
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\App.baml
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Views\MainWindow.baml
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.g.resources
@@ -23,4 +24,3 @@ D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.pdb
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.genruntimeconfig.cache
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\ref\Knights_Tour.dll
-D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
