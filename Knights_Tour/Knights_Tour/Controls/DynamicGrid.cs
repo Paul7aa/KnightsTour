@@ -19,7 +19,12 @@ namespace Knights_Tour.Controls
             DependencyProperty.Register("RowsColumns", typeof(int), typeof(DynamicGrid), new PropertyMetadata(0, RowsColumnsChanged));
 
         public static readonly DependencyProperty CellCollectionProperty =
-            DependencyProperty.Register("CellCollection", typeof(CellModel[][]), typeof(DynamicGrid), new PropertyMetadata(0, CellCollectionChanged));
+            DependencyProperty.Register("CellCollection", typeof(CellCollectionModel), typeof(DynamicGrid), new PropertyMetadata(new CellCollectionModel(8), CellCollectionChanged));
+
+        public DynamicGrid()
+        {
+            CellCollection = new CellCollectionModel(8);
+        }
 
         public int RowsColumns
         {
@@ -30,9 +35,9 @@ namespace Knights_Tour.Controls
             }
         }
 
-        public CellModel[][] CellCollection
+        public CellCollectionModel CellCollection
         {
-            get { return (CellModel[][])GetValue(CellCollectionProperty); }
+            get { return (CellCollectionModel)GetValue(CellCollectionProperty); }
             set
             {
                 SetValue(CellCollectionProperty, value);
@@ -55,6 +60,7 @@ namespace Knights_Tour.Controls
             grid.Rows = grid.RowsColumns + 1;
             grid.Columns = grid.RowsColumns + 1;
             grid.Children.Clear();
+            grid.CellCollection = new CellCollectionModel(grid.RowsColumns);
             SetGridColours(d);
         }
 
@@ -87,14 +93,14 @@ namespace Knights_Tour.Controls
                     if (i % 2 != 0 && j % 2 != 0 || i % 2 == 0 && j % 2 == 0)
                     {
                         newRectangle.Fill = new SolidColorBrush(Colors.White);
-                        grid.CellCollection[i][j].CellColour = cellColour.white;
+                        grid.CellCollection.Cells[i,j].CellColour = cellColour.white;
                     }
                     else
                     {
                         newRectangle.Fill = new SolidColorBrush(Colors.Black);
-                        grid.CellCollection[i][j].CellColour = cellColour.black;
+                        grid.CellCollection.Cells[i,j].CellColour = cellColour.black;
                     }
-                    grid.CellCollection[i][j].CellState = cellState.notVisited;
+                    grid.CellCollection.Cells[i, j].CellState = cellState.notVisited;
                     newRectangle.Stroke = new SolidColorBrush(Colors.Black);
                     newRectangle.StrokeThickness = 2;
                     grid.Children.Add(newRectangle);
@@ -111,7 +117,7 @@ namespace Knights_Tour.Controls
             {
                 for (int j = 0; j < grid.RowsColumns-1; j++)
                 {
-                    if (grid.CellCollection[i][j].CellState == cellState.visited)
+                    if (grid.CellCollection.Cells[i, j].CellState == cellState.visited)
                     {
                         Rectangle newRectangle = new Rectangle();
                         newRectangle.Fill = new SolidColorBrush(Colors.GreenYellow);
@@ -127,7 +133,7 @@ namespace Knights_Tour.Controls
                             if (((SolidColorBrush)((Rectangle)element).Fill).Color == Colors.GreenYellow)
                             {
                                 Rectangle newRectangle = new Rectangle();
-                                switch (grid.CellCollection[i][j].CellColour)
+                                switch (grid.CellCollection.Cells[i, j].CellColour)
                                 {
                                     case cellColour.black:
                                         newRectangle.Fill = new SolidColorBrush(Colors.Black);

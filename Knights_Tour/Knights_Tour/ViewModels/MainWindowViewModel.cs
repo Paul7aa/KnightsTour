@@ -14,13 +14,12 @@ namespace Knights_Tour.ViewModels
     public partial class MainWindowViewModel : BaseViewModel
     {
         private int m_chessBoardSize = 8;
-        private String m_rowHelperText = "1 - 8";
-        private String m_columnHelperText = "A - H";
-        private String m_executeButtonContent = "START";
+        private String m_rowHelperText = "";
+        private String m_columnHelperText = "";
+        private String m_executeButtonContent = "";
         private SolidColorBrush m_executeButtonColor = Brushes.DarkGreen;
-        private Boolean isExecuting = false;
-
-        private CellModel[][] m_cells = new CellModel[8][8]; 
+        private Boolean m_isExecuting = false;
+        private CellCollectionModel m_cellCollection = null;
 
         public int ChessBoardSize
         {
@@ -31,6 +30,7 @@ namespace Knights_Tour.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(RowHelperText));
                 OnPropertyChanged(nameof(ColumnHelperText));
+                OnPropertyChanged(nameof(CellCollection));
             }
         }
 
@@ -56,7 +56,7 @@ namespace Knights_Tour.ViewModels
 
         public String ExecuteButtonContent
         {
-            get => (!isExecuting) ? "START" : "STOP";
+            get => (!m_isExecuting) ? "START" : "STOP";
             set
             {
                 m_executeButtonContent = value;
@@ -66,7 +66,7 @@ namespace Knights_Tour.ViewModels
 
         public SolidColorBrush ExecuteButtonColour
         {
-            get => (!isExecuting) ? Brushes.LimeGreen : Brushes.Red;
+            get => (!m_isExecuting) ? Brushes.LimeGreen : Brushes.Red;
             set
             {
                 ExecuteButtonColour = value;
@@ -76,13 +76,27 @@ namespace Knights_Tour.ViewModels
 
         public Boolean IsExecuting
         {
-            get => isExecuting;
+            get => m_isExecuting;
             set
             {
-                isExecuting = value;
+                m_isExecuting = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ExecuteButtonContent));
                 OnPropertyChanged(nameof(ExecuteButtonColour));
+            }
+        }
+
+        public CellCollectionModel CellCollection{
+            get
+            {
+                if (m_cellCollection == null)
+                    m_cellCollection = new CellCollectionModel(ChessBoardSize);
+                return m_cellCollection;
+            }
+            set
+            {
+                m_cellCollection = value;
+                OnPropertyChanged();
             }
         }
     }

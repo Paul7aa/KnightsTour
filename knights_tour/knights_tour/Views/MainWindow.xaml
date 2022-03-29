@@ -39,6 +39,7 @@
             <controls:DynamicGrid
             x:Name="chessBoard"
             RowsColumns="{Binding Path=ChessBoardSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+            CellCollection="{Binding Path=CellCollection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             Grid.Column="0"/>
 
         </Grid>
