@@ -10,7 +10,11 @@ namespace Knights_Tour.ViewModels
     {
         public void StartAlgorithm()
         {
-            IsExecuting = true;
+            IsExecuting = !IsExecuting;
+            if (IsExecuting)
+            {
+
+            }
         }
     }
 }

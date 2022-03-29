@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Knights_Tour.Commands;
+using Knights_Tour.Models;
 
 namespace Knights_Tour.ViewModels
 {
@@ -18,6 +19,8 @@ namespace Knights_Tour.ViewModels
         private String m_executeButtonContent = "START";
         private SolidColorBrush m_executeButtonColor = Brushes.DarkGreen;
         private Boolean isExecuting = false;
+
+        private CellModel[][] m_cells = new CellModel[8][8]; 
 
         public int ChessBoardSize
         {
