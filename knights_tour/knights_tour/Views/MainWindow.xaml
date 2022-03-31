@@ -15,6 +15,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignDarkBackground}"
         FontFamily="{DynamicResource MaterialDesignFont}"
+        Name ="mainWindow"
         Title="Knights Tour Simulator" Height="650" Width="1000"
         ResizeMode="CanMinimize">
     
@@ -32,17 +33,12 @@
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1" Width="550" Height="550">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <controls:DynamicGrid
+        <controls:DynamicGrid 
+            Grid.Row="1" Grid.Column="1" Width="550" Height="550"
             x:Name="chessBoard"
             RowsColumns="{Binding Path=ChessBoardSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-            CellCollection="{Binding Path=CellCollection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            Grid.Column="0"/>
-
-        </Grid>
+            CellCollection="{Binding Path=CellCollection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+        </controls:DynamicGrid>
 
         <Grid Grid.Column="2" Grid.Row="1">
             <Grid.RowDefinitions>

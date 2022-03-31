@@ -19,7 +19,7 @@ namespace Knights_Tour.ViewModels
         private String m_executeButtonContent = "";
         private SolidColorBrush m_executeButtonColor = Brushes.DarkGreen;
         private Boolean m_isExecuting = false;
-        private CellCollectionModel m_cellCollection = null;
+        private CellCollectionModel m_cellCollection;
 
         public int ChessBoardSize
         {
@@ -89,7 +89,7 @@ namespace Knights_Tour.ViewModels
         public CellCollectionModel CellCollection{
             get
             {
-                if (m_cellCollection == null)
+                if (m_cellCollection == null || m_cellCollection.Size != ChessBoardSize)
                     m_cellCollection = new CellCollectionModel(ChessBoardSize);
                 return m_cellCollection;
             }

@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Knights_Tour.Models;
+using Knights_Tour.BaseModels;
 
 namespace Knights_Tour.Controls
 {
@@ -19,12 +20,7 @@ namespace Knights_Tour.Controls
             DependencyProperty.Register("RowsColumns", typeof(int), typeof(DynamicGrid), new PropertyMetadata(0, RowsColumnsChanged));
 
         public static readonly DependencyProperty CellCollectionProperty =
-            DependencyProperty.Register("CellCollection", typeof(CellCollectionModel), typeof(DynamicGrid), new PropertyMetadata(new CellCollectionModel(8), CellCollectionChanged));
-
-        public DynamicGrid()
-        {
-            CellCollection = new CellCollectionModel(8);
-        }
+            DependencyProperty.Register("CellCollection", typeof(CellCollectionModel), typeof(DynamicGrid), new PropertyMetadata(null, CellCollectionChanged));
 
         public int RowsColumns
         {
@@ -47,24 +43,13 @@ namespace Knights_Tour.Controls
         private static void RowsColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
-            if (grid.RowsColumns > 11)
-            {
-                grid.Width = grid.RowsColumns * 32.5;
-                grid.Height = grid.RowsColumns * 32.5;
-            }
-            else
-            {
-                grid.Width = grid.RowsColumns * 50;
-                grid.Height = grid.RowsColumns * 50;
-            }
             grid.Rows = grid.RowsColumns + 1;
             grid.Columns = grid.RowsColumns + 1;
             grid.Children.Clear();
-            grid.CellCollection = new CellCollectionModel(grid.RowsColumns);
-            SetGridColours(d);
         }
 
-        private static void SetGridColours(DependencyObject d){
+        private static void SetGridColours(DependencyObject d)
+        {
             DynamicGrid grid = (DynamicGrid)d;
             for (int i = 0; i < grid.Rows; i++)
             {
@@ -93,12 +78,12 @@ namespace Knights_Tour.Controls
                     if (i % 2 != 0 && j % 2 != 0 || i % 2 == 0 && j % 2 == 0)
                     {
                         newRectangle.Fill = new SolidColorBrush(Colors.White);
-                        grid.CellCollection.Cells[i,j].CellColour = cellColour.white;
+                        grid.CellCollection.Cells[i, j].CellColour = cellColour.white;
                     }
                     else
                     {
                         newRectangle.Fill = new SolidColorBrush(Colors.Black);
-                        grid.CellCollection.Cells[i,j].CellColour = cellColour.black;
+                        grid.CellCollection.Cells[i, j].CellColour = cellColour.black;
                     }
                     grid.CellCollection.Cells[i, j].CellState = cellState.notVisited;
                     newRectangle.Stroke = new SolidColorBrush(Colors.Black);
@@ -113,45 +98,41 @@ namespace Knights_Tour.Controls
         private static void CellCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
-            for (int i = 0; i < grid.RowsColumns-1; i++)
-            {
-                for (int j = 0; j < grid.RowsColumns-1; j++)
-                {
-                    if (grid.CellCollection.Cells[i, j].CellState == cellState.visited)
+            SetGridColours(d);
+            if (grid.CellCollection != null) { 
+            //for (int i = 0; i < grid.RowsColumns - 1; i++)
+            //{
+                    for (int j = 0; j < grid.RowsColumns - 1; j++)
                     {
-                        Rectangle newRectangle = new Rectangle();
-                        newRectangle.Fill = new SolidColorBrush(Colors.GreenYellow);
-                        grid.Children.Add(newRectangle);
-                        Grid.SetRow(newRectangle, i);
-                        Grid.SetColumn(newRectangle, i);
-                    }
-                    else
-                    {
-                        var element = grid.Children.Cast<UIElement>().
-                            FirstOrDefault(e => Grid.GetColumn(e) == i && Grid.GetRow(e) == j);
-                        if (element != null)
-                            if (((SolidColorBrush)((Rectangle)element).Fill).Color == Colors.GreenYellow)
-                            {
-                                Rectangle newRectangle = new Rectangle();
-                                switch (grid.CellCollection.Cells[i, j].CellColour)
+                        if (grid.CellCollection.Cells[i, j].CellState == cellState.visited)
+                        {
+                            Rectangle newRectangle = new Rectangle();
+                            newRectangle.Fill = new SolidColorBrush(Colors.GreenYellow);
+                            grid.Children.Add(newRectangle);
+                            Grid.SetRow(newRectangle, i);
+                            Grid.SetColumn(newRectangle, i);
+                        }
+                        else
+                        {
+                            var element = grid.Children.Cast<UIElement>().
+                                FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
+                            if (element != null)
+                                if (((SolidColorBrush)((Rectangle)element).Fill).Color == Colors.GreenYellow)
                                 {
-                                    case cellColour.black:
-                                        newRectangle.Fill = new SolidColorBrush(Colors.Black);
-                                        grid.Children.Add(newRectangle);
-                                        Grid.SetRow(newRectangle, i);
-                                        Grid.SetColumn(newRectangle, i);
-                                        break;
-                                    case cellColour.white:
-                                        newRectangle.Fill = new SolidColorBrush(Colors.White);
-                                        grid.Children.Add(newRectangle);
-                                        Grid.SetRow(newRectangle, i);
-                                        Grid.SetColumn(newRectangle, i);
-                                        break;
+                                    switch (grid.CellCollection.Cells[i, j].CellColour)
+                                    {
+                                        case cellColour.black:
+                                            (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.Black;
+                                            break;
+                                        case cellColour.white:
+                                            (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.White;
+                                            break;
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
-            }
+            //}
         }
     }
 }

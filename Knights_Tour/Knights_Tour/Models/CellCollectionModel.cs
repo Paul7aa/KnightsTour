@@ -20,14 +20,23 @@ namespace Knights_Tour.Models
             {
                 for (int j = 0; j < size; j++)
                 {
-                    m_cells[i, j] = new CellModel();  
+                    m_cells[i, j] = new CellModel(i, j, cellState.notVisited); 
                 }
             }
+        }
+
+        public CellCollectionModel(CellCollectionModel cellCollection)
+        {
+            this.m_cells = cellCollection.m_cells;
+            this.m_size = cellCollection.m_size;
         }
         
         public CellModel[,] Cells
         {
-            get => m_cells;
+            get
+            {
+                return m_cells;
+            }
             set
             {
                 m_cells = value;

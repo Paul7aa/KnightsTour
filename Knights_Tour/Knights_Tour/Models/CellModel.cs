@@ -24,6 +24,19 @@ namespace Knights_Tour.Models
         private cellState m_state = cellState.notVisited;
         private cellColour m_colour;
 
+        public CellModel(int i, int j, cellState state)
+        {
+            m_state = state;
+            if (i % 2 != 0 && j % 2 != 0 || i % 2 == 0 && j % 2 == 0)
+            {
+                m_colour = cellColour.white;
+            }
+            else
+            {
+                m_colour = cellColour.black;
+            }
+        }
+
         public cellState CellState
         {
             get => m_state;
