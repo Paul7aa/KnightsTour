@@ -22,6 +22,8 @@ namespace Knights_Tour.Controls
         public static readonly DependencyProperty CellCollectionProperty =
             DependencyProperty.Register("CellCollection", typeof(CellCollectionModel), typeof(DynamicGrid), new PropertyMetadata(null, CellCollectionChanged));
 
+        private bool m_gridColoursSet = false;
+
         public int RowsColumns
         {
             get { return (int)GetValue(RowsColumnsProperty); }
@@ -43,6 +45,7 @@ namespace Knights_Tour.Controls
         private static void RowsColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
+            grid.m_gridColoursSet = false;
             grid.Rows = grid.RowsColumns + 1;
             grid.Columns = grid.RowsColumns + 1;
             grid.Children.Clear();
@@ -51,6 +54,8 @@ namespace Knights_Tour.Controls
         private static void SetGridColours(DependencyObject d)
         {
             DynamicGrid grid = (DynamicGrid)d;
+            if (grid.m_gridColoursSet)
+                return;
             for (int i = 0; i < grid.Rows; i++)
             {
                 for (int j = 0; j < grid.Columns; j++)
@@ -98,24 +103,26 @@ namespace Knights_Tour.Controls
         private static void CellCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
-            SetGridColours(d);
-            if (grid.CellCollection != null) { 
-            //for (int i = 0; i < grid.RowsColumns - 1; i++)
-            //{
+
+            if (!grid.m_gridColoursSet)
+            {
+                SetGridColours(d);
+                grid.m_gridColoursSet = true;
+            }
+
+            if (grid.CellCollection != null) {
+                for (int i = 0; i < grid.RowsColumns - 1; i++)
+                {
                     for (int j = 0; j < grid.RowsColumns - 1; j++)
                     {
+                        var element = grid.Children.Cast<UIElement>().
+                            FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
                         if (grid.CellCollection.Cells[i, j].CellState == cellState.visited)
                         {
-                            Rectangle newRectangle = new Rectangle();
-                            newRectangle.Fill = new SolidColorBrush(Colors.GreenYellow);
-                            grid.Children.Add(newRectangle);
-                            Grid.SetRow(newRectangle, i);
-                            Grid.SetColumn(newRectangle, i);
+                            (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.GreenYellow;
                         }
                         else
                         {
-                            var element = grid.Children.Cast<UIElement>().
-                                FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
                             if (element != null)
                                 if (((SolidColorBrush)((Rectangle)element).Fill).Color == Colors.GreenYellow)
                                 {
@@ -132,7 +139,7 @@ namespace Knights_Tour.Controls
                         }
                     }
                 }
-            //}
+            }
         }
     }
 }
