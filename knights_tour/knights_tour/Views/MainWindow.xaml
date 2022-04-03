@@ -51,6 +51,7 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -66,7 +67,7 @@
                                  UpdateSourceTrigger="PropertyChanged"
                                  Mode="TwoWay">
                             <Binding.ValidationRules>
-                                <validation:ChessBoardSizeValidationRule MinSize="3" MaxSize="16"/>
+                                <validation:ChessBoardSizeValidationRule MinSize="5" MaxSize="16"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -79,6 +80,25 @@
                 <TextBlock Text="Row:" VerticalAlignment="Center"></TextBlock>
                 <TextBox Width="50" Height="30" Margin="10,0,0,0"
                          materialDesign:HintAssist.HelperTextFontSize="8">
+                    <TextBox.Resources>
+                        <validation:BindingProxy Data="{Binding}" x:Key="proxy"/>
+                    </TextBox.Resources>
+                    <TextBox.Text>
+                        <Binding Path="KnightX"
+                                 UpdateSourceTrigger="PropertyChanged"
+                                 Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <validation:KnightRowValidationRule IsRow="True" MinSize="1"
+                                                                    ValidationStep="CommittedValue">
+                                    <validation:KnightRowValidationRule.Wrapper>
+                                        <validation:Wrapper MaxSize="{Binding Path = Data.ChessBoardSize,
+                                            UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                                            Source={StaticResource proxy}}"/>
+                                    </validation:KnightRowValidationRule.Wrapper>
+                                </validation:KnightRowValidationRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                     <materialDesign:HintAssist.Hint>
                         <TextBlock Text="{Binding Path=RowHelperText,
                             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -87,6 +107,23 @@
                 <TextBlock Text="Column:" VerticalAlignment="Center"></TextBlock>
                 <TextBox Width="50" Height="30" Margin="10,0,0,0"
                          materialDesign:HintAssist.HelperTextFontSize="8">
+                    <TextBox.Resources>
+                        <validation:BindingProxy Data="{Binding}" x:Key="proxy"/>
+                    </TextBox.Resources>
+                    <Binding Path="KnightY"
+                             UpdateSourceTrigger="PropertyChanged"
+                             Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <validation:KnightRowValidationRule IsRow ="False" MinSize="65"
+                                                                ValidationStep="CommittedValue">
+                                <validation:KnightRowValidationRule.Wrapper>
+                                    <validation:Wrapper MaxSize="{Binding Path = Data.ChessBoardSize,
+                                            UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                                            Source={StaticResource proxy}}"/>
+                                </validation:KnightRowValidationRule.Wrapper>
+                            </validation:KnightRowValidationRule>
+                        </Binding.ValidationRules>
+                    </Binding>
                     <materialDesign:HintAssist.Hint>
                         <TextBlock Text="{Binding Path=ColumnHelperText,
                             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -97,6 +134,15 @@
                     Content ="{Binding ExecuteButtonContent, UpdateSourceTrigger=PropertyChanged, Mode =TwoWay}"
                     Background="{Binding ExecuteButtonColour, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                     Command="{Binding StartAlgorithmCommand}"/>
+            <StackPanel Grid.Row="8" Margin="30,0,0,0" Orientation ="Horizontal" >
+                <TextBlock Text="Time Elapsed:" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Margin=" 10,0,0,0" Width="200" 
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"
+                           Text="{Binding Path= TimeElapsedString, 
+                           UpdateSourceTrigger = PropertyChanged, Mode=OneWay}"/>
+
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

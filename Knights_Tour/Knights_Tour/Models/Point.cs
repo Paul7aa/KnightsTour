@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Knights_Tour.BaseModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Knights_Tour.BaseModels
+namespace Knights_Tour.Models
 {
     public class Point : BaseModel
     {

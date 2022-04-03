@@ -17,7 +17,7 @@ namespace Knights_Tour.ViewModels
             get
             {
                 if (m_startAlgorithmCommand == null)
-                    return new RelayCommand((_) => StartAlgorithm(), (_) => true);
+                    return new AsyncRelayCommand(async (_) => await StartAlgorithm(), (_) => CanStartAlgorithm());
                 return m_startAlgorithmCommand;
                 
             }

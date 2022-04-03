@@ -22,6 +22,9 @@ namespace Knights_Tour.Controls
         public static readonly DependencyProperty CellCollectionProperty =
             DependencyProperty.Register("CellCollection", typeof(CellCollectionModel), typeof(DynamicGrid), new PropertyMetadata(null, CellCollectionChanged));
 
+        public static readonly DependencyProperty KnightProperty =
+            DependencyProperty.Register("Knight", typeof(KnightModel), typeof(DynamicGrid), new PropertyMetadata(null, KnightChanged));
+
         private bool m_gridColoursSet = false;
 
         public int RowsColumns
@@ -140,6 +143,11 @@ namespace Knights_Tour.Controls
                     }
                 }
             }
+        }
+
+        private static void KnightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            DynamicGrid grid = (DynamicGrid)d;
         }
     }
 }

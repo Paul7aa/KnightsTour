@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Knights_Tour.ValidationRules
@@ -20,7 +16,7 @@ namespace Knights_Tour.ValidationRules
             bool parseSuccessful = Int32.TryParse(size, out intSize);
 
             if (!parseSuccessful || intSize > MaxSize || intSize < MinSize)
-                return new ValidationResult(false, "Must be a number between in [3,16]");
+                return new ValidationResult(false, "Must be a number between in [5,16]");
             else
                 return new ValidationResult(true, null);
         }

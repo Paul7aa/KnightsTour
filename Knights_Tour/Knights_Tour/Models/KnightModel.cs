@@ -11,10 +11,12 @@ namespace Knights_Tour.Models
     public class KnightModel : BaseModel
     {
         private Point currPosition;
+        private Point previousPosition;
 
         public KnightModel(Point currPosition)
         {
             this.currPosition = currPosition;
+            previousPosition = new Point();
         }
 
         public Point CurrentPosition{
@@ -26,5 +28,20 @@ namespace Knights_Tour.Models
             }
         }
 
+        public Point PreviousPosition
+        {
+            get => previousPosition;
+            set
+            {
+                previousPosition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void SetPreviousPosition()
+        {
+            PreviousPosition.X = CurrentPosition.X;
+            PreviousPosition.Y = CurrentPosition.Y;
+        }
     }
 }

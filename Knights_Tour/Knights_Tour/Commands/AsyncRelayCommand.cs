@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace Knights_Tour.Commands
 {
-    public class RelayCommand : ICommand
+    public class AsyncRelayCommand : ICommand
     {
-        readonly Action<object> _execute;
+        readonly Func<object,Task> _execute;
         readonly Predicate<object> _canExecute;
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        public AsyncRelayCommand(Func<object,Task> execute, Predicate<object> canExecute)
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");
@@ -32,9 +32,10 @@ namespace Knights_Tour.Commands
             return _canExecute == null ? true : _canExecute(parameter);
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            _execute(parameter);
+            await _execute(parameter);
         }
     }
+
 }
