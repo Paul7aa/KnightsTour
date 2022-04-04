@@ -15,8 +15,8 @@ namespace Knights_Tour.ValidationRules
             int intSize;
             bool parseSuccessful = Int32.TryParse(size, out intSize);
 
-            if (!parseSuccessful || intSize > MaxSize || intSize < MinSize)
-                return new ValidationResult(false, "Must be a number between in [5,16]");
+            if (!parseSuccessful || intSize > MaxSize || intSize < MinSize || intSize % 2 != 0)
+                return new ValidationResult(false, "Must be an even number between in [6,16]");
             else
                 return new ValidationResult(true, null);
         }

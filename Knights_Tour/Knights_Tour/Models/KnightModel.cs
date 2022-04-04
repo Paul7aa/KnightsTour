@@ -17,21 +17,21 @@ namespace Knights_Tour.Models
         public KnightModel(Point currPosition)
         {
             this.currPosition = currPosition;
-            previousPosition = new Point();
+            previousPosition = new Point(0,0);
             
         }
 
         public KnightModel(KnightModel knight)
         {
             this.currPosition = knight.currPosition;
-            previousPosition = new Point();
+            this.previousPosition = knight.previousPosition;
             this.isMoving = knight.isMoving;
         }
 
         public Point CurrentPosition{
             get => currPosition;
             set 
-            { 
+            {
                 currPosition = value;
                 OnPropertyChanged();
             }

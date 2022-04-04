@@ -8,8 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="C:\Users\Paul\OneDrive - Universitatea Politehnica Timisoara\Unrelated\Desktop\KnightIcon.bmp" Link="KnightIcon.bmp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignColors" Version="2.0.4" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

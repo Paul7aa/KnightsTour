@@ -185,19 +185,16 @@ namespace Knights_Tour.Models
 
             sw.Start(); //start timer
 
-                while (!findClosedTour())
+            while (!findClosedTour())
+            {
+                ToursTested++;
+                if (sw.Elapsed > timeLimit || cancellationToken.IsCancellationRequested)
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                        throw new TaskCanceledException();
-
-                    ToursTested++;
-                    if (sw.Elapsed > timeLimit)
-                    {
-                        sw.Stop();
-                        solutionFound = false;
-                        throw new TaskCanceledException();
-                    }
+                    sw.Stop();
+                    solutionFound = false;
+                    throw new TaskCanceledException();
                 }
+            }
 
             solutionFound = true;
             sw.Stop();

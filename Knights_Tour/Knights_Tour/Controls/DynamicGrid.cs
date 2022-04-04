@@ -10,6 +10,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Knights_Tour.Models;
 using Knights_Tour.BaseModels;
+using System.Windows.Media.Imaging;
 
 namespace Knights_Tour.Controls
 {
@@ -25,7 +26,17 @@ namespace Knights_Tour.Controls
         public static readonly DependencyProperty KnightProperty =
             DependencyProperty.Register("Knight", typeof(KnightModel), typeof(DynamicGrid), new PropertyMetadata(null, KnightChanged));
 
-        private bool m_gridColoursSet = false;
+        public static readonly DependencyProperty NeedsResetProperty =
+            DependencyProperty.Register("NeedsReset", typeof(Boolean), typeof(DynamicGrid), new PropertyMetadata(true, NeedsResetChanged));
+
+        private ImageBrush img;
+
+        public DynamicGrid()
+        {
+            img = new ImageBrush();
+            img.ImageSource = new BitmapImage(new Uri("D:\\University\\TPA\\KnightsTour\\Knights_Tour\\Knights_Tour\\Resources\\KnightIcon.bmp"));
+            img.Stretch = Stretch.Uniform;
+        }
 
         public int RowsColumns
         {
@@ -54,10 +65,19 @@ namespace Knights_Tour.Controls
             }
         }
 
+        public Boolean NeedsReset
+        {
+            get { return (Boolean)GetValue(NeedsResetProperty); }
+            set
+            {
+                SetValue(NeedsResetProperty, value);
+            }
+        }
+
         private static void RowsColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
-            grid.m_gridColoursSet = false;
+            grid.NeedsReset = true;
             grid.Rows = grid.RowsColumns + 1;
             grid.Columns = grid.RowsColumns + 1;
             grid.Children.Clear();
@@ -66,7 +86,7 @@ namespace Knights_Tour.Controls
         private static void SetGridColours(DependencyObject d)
         {
             DynamicGrid grid = (DynamicGrid)d;
-            if (grid.m_gridColoursSet)
+            if (!grid.NeedsReset)
                 return;
             grid.Children.Clear();
             for (int i = 0; i < grid.Rows; i++)
@@ -97,18 +117,24 @@ namespace Knights_Tour.Controls
                     if (i % 2 != 0 && j % 2 != 0 || i % 2 == 0 && j % 2 == 0)
                     {
                         newRectangle.Fill = new SolidColorBrush(Colors.White);
+                        newRectangle.Stroke = new SolidColorBrush(Colors.Black);
+                        newRectangle.StrokeThickness = 1;
                         grid.CellCollection.Cells[i, j].CellColour = cellColour.white;
                     }
                     else
                     {
                         newRectangle.Fill = new SolidColorBrush(Colors.Black);
+                        newRectangle.Stroke = new SolidColorBrush(Colors.Black);
+                        newRectangle.StrokeThickness = 1;
                         grid.CellCollection.Cells[i, j].CellColour = cellColour.black;
                     }
                     grid.CellCollection.Cells[i, j].CellState = cellState.notVisited;
                     if (grid.Knight.CurrentPosition.X == i && grid.Knight.CurrentPosition.Y == j)
                     {
-                        grid.CellCollection.Cells[i, j].CellState = cellState.visited;
-                        newRectangle.Fill = new SolidColorBrush((Colors.GreenYellow));
+                        grid.CellCollection.Cells[i, j].CellState = cellState.busy;
+                        newRectangle.Fill = grid.img;
+                        newRectangle.Stroke = new SolidColorBrush(Colors.Black);
+                        newRectangle.StrokeThickness = 1;
                     }
                     grid.Children.Add(newRectangle);
                     Grid.SetRow(newRectangle, i);
@@ -121,41 +147,42 @@ namespace Knights_Tour.Controls
         {
             DynamicGrid grid = (DynamicGrid)d;
 
-            if (!grid.m_gridColoursSet)
+            if (grid.NeedsReset)
             {
                 SetGridColours(d);
-                grid.m_gridColoursSet = true;
+                grid.NeedsReset = false;
             }
-
-            if (grid.CellCollection != null) {
-                for (int i = 0; i < grid.RowsColumns; i++)
+            else
+            {
+                if (grid.CellCollection != null)
                 {
-                    for (int j = 0; j < grid.RowsColumns; j++)
+                    int x = grid.Knight.CurrentPosition.X;
+                    int y = grid.Knight.CurrentPosition.Y;
+                    int px = grid.Knight.PreviousPosition.X;
+                    int py = grid.Knight.PreviousPosition.Y;
+
+                    for (int i = 0; i < grid.RowsColumns; i++)
                     {
-                        var element = grid.Children.Cast<UIElement>().
-                            FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
-                        if (grid.CellCollection.Cells[i, j].CellState == cellState.visited)
+                        for (int j = 0; j < grid.RowsColumns; j++)
                         {
-                            (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.GreenYellow;
-                        }
-                        else
-                        {
-                            if (element != null)
-                                if (((SolidColorBrush)((Rectangle)element).Fill).Color == Colors.GreenYellow )
-                                {
-                                    if (grid.CellCollection.Cells[i, j].CellState == cellState.notVisited)
-                                    {
-                                        switch (grid.CellCollection.Cells[i, j].CellColour)
-                                        {
-                                            case cellColour.black:
-                                                (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.Black;
-                                                break;
-                                            case cellColour.white:
-                                                (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.White;
-                                                break;
-                                        }
-                                    }
-                                }
+                            if(x == i && y == j)
+                            {
+                                var element = grid.Children.Cast<UIElement>().
+                                    FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
+
+                                if(element!=null)
+                                    ((Rectangle)element).Fill = grid.img;
+
+                            }
+
+                            if(px == i && py == j)
+                            {
+                                var element = grid.Children.Cast<UIElement>().
+                                    FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
+
+                                if (element != null)
+                                    ((Rectangle)element).Fill = new SolidColorBrush(Colors.GreenYellow);
+                            }
                         }
                     }
                 }
@@ -167,12 +194,19 @@ namespace Knights_Tour.Controls
             DynamicGrid grid = (DynamicGrid)d;
             if (grid.CellCollection != null)
             {
-                if(!grid.Knight.IsMoving)
-                    grid.m_gridColoursSet = false;
+                if (!grid.Knight.IsMoving)
+                    grid.NeedsReset = true;
                 else
-                    grid.CellCollection.Cells[grid.Knight.CurrentPosition.X, grid.Knight.CurrentPosition.Y].CellState = cellState.visited;
+                {
+                    grid.CellCollection.Cells[grid.Knight.CurrentPosition.X, grid.Knight.CurrentPosition.Y].CellState = cellState.busy;
+                    grid.CellCollection.Cells[grid.Knight.PreviousPosition.X, grid.Knight.PreviousPosition.Y].CellState = cellState.visited;
+                }
                 CellCollectionChanged(grid, e);
             }
+        }
+
+        private static void NeedsResetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
         }
     }
 }

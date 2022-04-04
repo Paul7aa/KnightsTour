@@ -11,7 +11,8 @@ namespace Knights_Tour.Models
     {
         none,
         notVisited,
-        visited
+        visited,
+        busy
     }
 
     public enum cellColour

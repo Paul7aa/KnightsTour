@@ -27,12 +27,12 @@ namespace Knights_Tour.ViewModels
         private WarnsdorffAlgorithmModel m_warnsdorffAlgorithm;
         public DateTime startTime = DateTime.Now;
         public DispatcherTimer m_timeElapsed;
-        public string m_timeElapsedString = "0";
+        public String m_timeElapsedString = "0";
         public KnightModel m_knight;
         public String m_knightX = "1";
         public String m_knightY = "A";
+        public Boolean m_NeedsReset = false;
         CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-        CancellationToken previousCancelToken;
 
         public KnightModel Knight
         {
@@ -55,17 +55,20 @@ namespace Knights_Tour.ViewModels
             set
             {
                 m_knightX = value;
-                if (validRow(m_knightX))
+                if (!NeedsReset)
                 {
-                    Knight.SetPreviousPosition();
-                    Knight.CurrentPosition.X = Int32.Parse(m_knightX) - 1;
-                    KnightModel auxKnight = new KnightModel(Knight);
-                    Knight = auxKnight;
-                }
-                else
-                {
-                    Knight.SetPreviousPosition();
-                    Knight.CurrentPosition.X = -1;
+                    if (validRow(m_knightX))
+                    {
+                        Knight.SetPreviousPosition();
+                        Knight.CurrentPosition.X = Int32.Parse(m_knightX) - 1;
+                        KnightModel auxKnight = new KnightModel(Knight);
+                        Knight = auxKnight;
+                    }
+                    else
+                    {
+                        Knight.SetPreviousPosition();
+                        Knight.CurrentPosition.X = -1;
+                    }
                 }
                 OnPropertyChanged();
             }
@@ -77,17 +80,20 @@ namespace Knights_Tour.ViewModels
             set
             {
                 m_knightY = value;
-                if (validColumn(m_knightY))
+                if (!NeedsReset)
                 {
-                    Knight.SetPreviousPosition();
-                    Knight.CurrentPosition.Y = Char.Parse(m_knightY.ToUpper()) - 65;
-                    KnightModel auxKnight = new KnightModel(Knight);
-                    Knight = auxKnight;
-                }
-                else
-                {
-                    Knight.SetPreviousPosition();
-                    Knight.CurrentPosition.Y = -1;
+                    if (validColumn(m_knightY))
+                    {
+                        Knight.SetPreviousPosition();
+                        Knight.CurrentPosition.Y = Char.Parse(m_knightY.ToUpper()) - 65;
+                        KnightModel auxKnight = new KnightModel(Knight);
+                        Knight = auxKnight;
+                    }
+                    else
+                    {
+                        Knight.SetPreviousPosition();
+                        Knight.CurrentPosition.Y = -1;
+                    }
                 }
                 OnPropertyChanged();
             }
@@ -129,7 +135,7 @@ namespace Knights_Tour.ViewModels
             }
         }
 
-        public string TimeElapsedString
+        public String TimeElapsedString
         {
             get => m_timeElapsedString;
             set
@@ -144,6 +150,8 @@ namespace Knights_Tour.ViewModels
             set
             {
                 m_chessBoardSize = value;
+                KnightX = "1";
+                KnightY = "A";
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(RowHelperText));
                 OnPropertyChanged(nameof(ColumnHelperText));
@@ -200,6 +208,16 @@ namespace Knights_Tour.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ExecuteButtonContent));
                 OnPropertyChanged(nameof(ExecuteButtonColour));
+            }
+        }
+
+        public Boolean NeedsReset
+        {
+            get => m_NeedsReset;
+            set
+            {
+                m_NeedsReset = value;
+                OnPropertyChanged();
             }
         }
 

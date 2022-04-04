@@ -24,3 +24,5 @@ D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.pdb
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.genruntimeconfig.cache
 D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\ref\Knights_Tour.dll
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.Properties.Resources.resources
+D:\University\TPA\KnightsTour\Knights_Tour\Knights_Tour\obj\Debug\net6.0-windows\Knights_Tour.csproj.GenerateResource.cache

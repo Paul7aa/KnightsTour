@@ -38,7 +38,8 @@
             x:Name="chessBoard"
             RowsColumns="{Binding Path=ChessBoardSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
             Knight="{Binding Path=Knight, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-            CellCollection="{Binding Path=CellCollection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            CellCollection="{Binding Path=CellCollection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            NeedsReset="{Binding Path=NeedsReset, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
         </controls:DynamicGrid>
 
         <Grid Grid.Column="2" Grid.Row="1">
@@ -131,10 +132,12 @@
                     </materialDesign:HintAssist.Hint>
                 </TextBox>
             </StackPanel>
-            <Button Grid.Row="6" Width="150" Height="50"
+            <StackPanel Grid.Row="6" Margin="30,0,0,0" Orientation="Horizontal" >
+                <Button Width="150" Height="50"
                     Content ="{Binding ExecuteButtonContent, UpdateSourceTrigger=PropertyChanged, Mode =TwoWay}"
                     Background="{Binding ExecuteButtonColour, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                     Command="{Binding StartAlgorithmCommand}"/>
+            </StackPanel>
             <StackPanel Grid.Row="8" Margin="30,0,0,0" Orientation ="Horizontal" >
                 <TextBlock Text="Time Elapsed:" VerticalAlignment="Center"></TextBlock>
                 <TextBlock Margin=" 10,0,0,0" Width="200" 

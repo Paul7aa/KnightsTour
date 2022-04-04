@@ -15,13 +15,15 @@ namespace Knights_Tour.ViewModels
         public async Task StartAlgorithm()
         {
             try
-            {
+            { 
                 if (IsExecuting)
                 {
-                    cancelTokenSource.Cancel();
                     IsExecuting = !IsExecuting;
+                    cancelTokenSource.Cancel();
                     return;
                 }
+
+
                 IsExecuting = !IsExecuting;
                 if (IsExecuting)
                 {
@@ -32,16 +34,19 @@ namespace Knights_Tour.ViewModels
                     TimeElapsed.Stop();
                     int[,] solutionTour = m_warnsdorffAlgorithm.SolutionTour;
 
+                    //await Task.Run (() => ShowSolution(solutionTour, cancelTokenSource.Token));
+
                     int count = 1;
                     Knight.IsMoving = true;
-                    while(count != ChessBoardSize * ChessBoardSize)
+                    while (count != ChessBoardSize * ChessBoardSize)
                     {
-                        for (int i=0; i < solutionTour.GetLength(0); i++)
+                        for (int i = 0; i < solutionTour.GetLength(0); i++)
                         {
-                            for(int j=0; j < solutionTour.GetLength(1); j++)
+                            for (int j = 0; j < solutionTour.GetLength(1); j++)
                             {
                                 if (solutionTour[i, j] == count)
                                 {
+                                    Knight.SetPreviousPosition();
                                     Knight.CurrentPosition.X = i;
                                     Knight.CurrentPosition.Y = j;
                                     KnightModel auxKnight = new KnightModel(Knight);
@@ -49,20 +54,52 @@ namespace Knights_Tour.ViewModels
                                     count++;
                                     await Task.Delay(200);
                                 }
-                            }    
+                            }
                         }
+                        if (cancelTokenSource.IsCancellationRequested)
+                            throw new TaskCanceledException();
                     }
-
+                    NeedsReset = true;
                     IsExecuting = false;
+                    CommandManager.InvalidateRequerySuggested();
                 }
             } 
             catch (TaskCanceledException)
             {
+                NeedsReset = true;
                 IsExecuting = false;
                 TimeElapsed.Stop();
                 cancelTokenSource = new CancellationTokenSource();
+                CommandManager.InvalidateRequerySuggested();
             }
                 
+        }
+
+        public async Task ShowSolution(int[,] solutionTour, CancellationToken cancellationToken)
+        {
+            int count = 1;
+            Knight.IsMoving = true;
+            while (count != ChessBoardSize * ChessBoardSize)
+            {
+                for (int i = 0; i < solutionTour.GetLength(0); i++)
+                {
+                    for (int j = 0; j < solutionTour.GetLength(1); j++)
+                    {
+                        if (solutionTour[i, j] == count)
+                        {
+                            Knight.SetPreviousPosition();
+                            Knight.CurrentPosition.X = i;
+                            Knight.CurrentPosition.Y = j;
+                            KnightModel auxKnight = new KnightModel(Knight);
+                            Knight = auxKnight;
+                            count++;
+                            await Task.Delay(200);
+                        }
+                    }
+                }
+                if (cancellationToken.IsCancellationRequested)
+                    throw new TaskCanceledException();
+            }
         }
 
         public void timeElapsedTick(object sender, EventArgs e)
