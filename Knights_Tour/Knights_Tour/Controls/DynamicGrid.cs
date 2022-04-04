@@ -45,6 +45,15 @@ namespace Knights_Tour.Controls
             }
         }
 
+        public KnightModel Knight
+        {
+            get { return (KnightModel)GetValue(KnightProperty); }
+            set
+            {
+                SetValue(KnightProperty, value);
+            }
+        }
+
         private static void RowsColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
@@ -59,6 +68,7 @@ namespace Knights_Tour.Controls
             DynamicGrid grid = (DynamicGrid)d;
             if (grid.m_gridColoursSet)
                 return;
+            grid.Children.Clear();
             for (int i = 0; i < grid.Rows; i++)
             {
                 for (int j = 0; j < grid.Columns; j++)
@@ -70,7 +80,7 @@ namespace Knights_Tour.Controls
                         if (i == grid.Rows - 1)
                             textBlock.Text = ((char)(j + 65)).ToString();
                         else
-                            textBlock.Text = (grid.RowsColumns - i).ToString();
+                            textBlock.Text = (i+1).ToString();
                         textBlock.TextAlignment = TextAlignment.Center;
                         textBlock.VerticalAlignment = VerticalAlignment.Center;
                         grid.Children.Add(textBlock);
@@ -81,6 +91,7 @@ namespace Knights_Tour.Controls
 
                     if (i == grid.Rows - 1 && j == grid.Columns - 1)
                         continue;
+
 
                     Rectangle newRectangle = new Rectangle();
                     if (i % 2 != 0 && j % 2 != 0 || i % 2 == 0 && j % 2 == 0)
@@ -94,8 +105,11 @@ namespace Knights_Tour.Controls
                         grid.CellCollection.Cells[i, j].CellColour = cellColour.black;
                     }
                     grid.CellCollection.Cells[i, j].CellState = cellState.notVisited;
-                    newRectangle.Stroke = new SolidColorBrush(Colors.Black);
-                    newRectangle.StrokeThickness = 2;
+                    if (grid.Knight.CurrentPosition.X == i && grid.Knight.CurrentPosition.Y == j)
+                    {
+                        grid.CellCollection.Cells[i, j].CellState = cellState.visited;
+                        newRectangle.Fill = new SolidColorBrush((Colors.GreenYellow));
+                    }
                     grid.Children.Add(newRectangle);
                     Grid.SetRow(newRectangle, i);
                     Grid.SetColumn(newRectangle, j);
@@ -114,9 +128,9 @@ namespace Knights_Tour.Controls
             }
 
             if (grid.CellCollection != null) {
-                for (int i = 0; i < grid.RowsColumns - 1; i++)
+                for (int i = 0; i < grid.RowsColumns; i++)
                 {
-                    for (int j = 0; j < grid.RowsColumns - 1; j++)
+                    for (int j = 0; j < grid.RowsColumns; j++)
                     {
                         var element = grid.Children.Cast<UIElement>().
                             FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
@@ -127,16 +141,19 @@ namespace Knights_Tour.Controls
                         else
                         {
                             if (element != null)
-                                if (((SolidColorBrush)((Rectangle)element).Fill).Color == Colors.GreenYellow)
+                                if (((SolidColorBrush)((Rectangle)element).Fill).Color == Colors.GreenYellow )
                                 {
-                                    switch (grid.CellCollection.Cells[i, j].CellColour)
+                                    if (grid.CellCollection.Cells[i, j].CellState == cellState.notVisited)
                                     {
-                                        case cellColour.black:
-                                            (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.Black;
-                                            break;
-                                        case cellColour.white:
-                                            (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.White;
-                                            break;
+                                        switch (grid.CellCollection.Cells[i, j].CellColour)
+                                        {
+                                            case cellColour.black:
+                                                (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.Black;
+                                                break;
+                                            case cellColour.white:
+                                                (((SolidColorBrush)((Rectangle)element).Fill).Color) = Colors.White;
+                                                break;
+                                        }
                                     }
                                 }
                         }
@@ -148,6 +165,14 @@ namespace Knights_Tour.Controls
         private static void KnightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DynamicGrid grid = (DynamicGrid)d;
+            if (grid.CellCollection != null)
+            {
+                if(!grid.Knight.IsMoving)
+                    grid.m_gridColoursSet = false;
+                else
+                    grid.CellCollection.Cells[grid.Knight.CurrentPosition.X, grid.Knight.CurrentPosition.Y].CellState = cellState.visited;
+                CellCollectionChanged(grid, e);
+            }
         }
     }
 }

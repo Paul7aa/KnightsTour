@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 
 namespace Knights_Tour.Models
 {
-     public enum cellState
+    public enum cellState
     {
+        none,
         notVisited,
         visited
     }
 
     public enum cellColour
     {
+        none,
         black,
         white
     }
 
-    public class CellModel : BaseModel
+    public class CellModel : BaseModel, IDisposable
     {
         private cellState m_state = cellState.notVisited;
         private cellColour m_colour;
@@ -66,5 +68,20 @@ namespace Knights_Tour.Models
         {
             CellState = cellState.visited;
         }
-    }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                m_colour = cellColour.none;
+                m_state = cellState.none;
+            }
+        }
+    } 
 }

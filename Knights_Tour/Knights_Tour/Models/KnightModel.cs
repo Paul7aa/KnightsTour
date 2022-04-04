@@ -12,11 +12,20 @@ namespace Knights_Tour.Models
     {
         private Point currPosition;
         private Point previousPosition;
+        private bool isMoving;
 
         public KnightModel(Point currPosition)
         {
             this.currPosition = currPosition;
             previousPosition = new Point();
+            
+        }
+
+        public KnightModel(KnightModel knight)
+        {
+            this.currPosition = knight.currPosition;
+            previousPosition = new Point();
+            this.isMoving = knight.isMoving;
         }
 
         public Point CurrentPosition{
@@ -34,6 +43,16 @@ namespace Knights_Tour.Models
             set
             {
                 previousPosition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsMoving
+        {
+            get => isMoving;
+            set
+            {
+                isMoving = value;
                 OnPropertyChanged();
             }
         }

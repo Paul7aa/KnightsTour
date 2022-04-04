@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -13,31 +14,55 @@ namespace Knights_Tour.ViewModels
     {
         public async Task StartAlgorithm()
         {
-            IsExecuting = !IsExecuting;
-            if (IsExecuting)
+            try
             {
-                //for (int i = 0; i < CellCollection.Size; i++)
-                //{
-                //    for(int j = 0; j < CellCollection.Size; j++)
-                //    {
-                //        CellCollection.Cells[i, j].CellState = Models.cellState.visited;
-                //        CellCollectionModel auxCellCollection = new CellCollectionModel(CellCollection);
-                //        CellCollection = auxCellCollection;
-                //        await Task.Delay(500);
-                //    }
+                if (IsExecuting)
+                {
+                    cancelTokenSource.Cancel();
+                    IsExecuting = !IsExecuting;
+                    return;
+                }
+                IsExecuting = !IsExecuting;
+                if (IsExecuting)
+                {
+                    m_warnsdorffAlgorithm = new WarnsdorffAlgorithmModel(ChessBoardSize, Knight);
+                    startTime = DateTime.Now;
+                    TimeElapsed.Start();
+                    await Task.Run(() => m_warnsdorffAlgorithm.GetSolution(cancelTokenSource.Token));
+                    TimeElapsed.Stop();
+                    int[,] solutionTour = m_warnsdorffAlgorithm.SolutionTour;
 
-                //}
+                    int count = 1;
+                    Knight.IsMoving = true;
+                    while(count != ChessBoardSize * ChessBoardSize)
+                    {
+                        for (int i=0; i < solutionTour.GetLength(0); i++)
+                        {
+                            for(int j=0; j < solutionTour.GetLength(1); j++)
+                            {
+                                if (solutionTour[i, j] == count)
+                                {
+                                    Knight.CurrentPosition.X = i;
+                                    Knight.CurrentPosition.Y = j;
+                                    KnightModel auxKnight = new KnightModel(Knight);
+                                    Knight = auxKnight;
+                                    count++;
+                                    await Task.Delay(200);
+                                }
+                            }    
+                        }
+                    }
 
-
-                
-                m_warnsdorffAlgorithm = new WarnsdorffAlgorithmModel(ChessBoardSize);
-                startTime = DateTime.Now;
-                TimeElapsed.Start();
-                await Task.Run(() => m_warnsdorffAlgorithm.GetSolution());
-                TimeElapsed.Stop();
-                int[,] solutionTour = m_warnsdorffAlgorithm.SolutionTour;
+                    IsExecuting = false;
+                }
+            } 
+            catch (TaskCanceledException)
+            {
                 IsExecuting = false;
+                TimeElapsed.Stop();
+                cancelTokenSource = new CancellationTokenSource();
             }
+                
         }
 
         public void timeElapsedTick(object sender, EventArgs e)

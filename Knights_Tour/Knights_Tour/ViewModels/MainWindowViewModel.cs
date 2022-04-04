@@ -11,6 +11,7 @@ using Knights_Tour.Models;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace Knights_Tour.ViewModels
 {
@@ -28,15 +29,17 @@ namespace Knights_Tour.ViewModels
         public DispatcherTimer m_timeElapsed;
         public string m_timeElapsedString = "0";
         public KnightModel m_knight;
-        public String m_knightX = "8";
+        public String m_knightX = "1";
         public String m_knightY = "A";
+        CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        CancellationToken previousCancelToken;
 
         public KnightModel Knight
         {
             get
             {
                 if (m_knight == null)
-                    m_knight = new KnightModel(new Point(7,0));
+                    m_knight = new KnightModel(new Point(0,0));
                 return m_knight;
             }
             set
@@ -56,6 +59,8 @@ namespace Knights_Tour.ViewModels
                 {
                     Knight.SetPreviousPosition();
                     Knight.CurrentPosition.X = Int32.Parse(m_knightX) - 1;
+                    KnightModel auxKnight = new KnightModel(Knight);
+                    Knight = auxKnight;
                 }
                 else
                 {
@@ -76,6 +81,8 @@ namespace Knights_Tour.ViewModels
                 {
                     Knight.SetPreviousPosition();
                     Knight.CurrentPosition.Y = Char.Parse(m_knightY.ToUpper()) - 65;
+                    KnightModel auxKnight = new KnightModel(Knight);
+                    Knight = auxKnight;
                 }
                 else
                 {
@@ -91,7 +98,7 @@ namespace Knights_Tour.ViewModels
             get
             {
                 if (m_warnsdorffAlgorithm == null)
-                    m_warnsdorffAlgorithm = new WarnsdorffAlgorithmModel(8);
+                    m_warnsdorffAlgorithm = new WarnsdorffAlgorithmModel(8, Knight);
                 return m_warnsdorffAlgorithm;
             }
             set

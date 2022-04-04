@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -12,20 +13,22 @@ namespace Knights_Tour.Models
     public class WarnsdorffAlgorithmModel : BaseModel
     {
         private int chessBoardSize;
-        //        // Move pattern on basis of the change of
-        //        // x coordinates and y coordinates respectively
+        // Move pattern on basis of the change of
+        // x coordinates and y coordinates respectively
         private int[] cx = new int[8] { 1, 1, 2, 2, -1, -1, -2, -2 };
         private int[] cy = new int[8] { 2, -2, 1, -1, 2, -2, 1, -1 };
         private int cellNumber = 1;
         private long toursTested;
         private int[,] solutionTour;
         private bool solutionFound;
+        private KnightModel knight;
 
-        public WarnsdorffAlgorithmModel(int chessBoardSize)
+        public WarnsdorffAlgorithmModel(int chessBoardSize, KnightModel knight)
         {
             this.chessBoardSize = chessBoardSize;
             this.toursTested = 0;
             this.solutionTour = new int[chessBoardSize, chessBoardSize];
+            this.knight = knight;
         }
 
         public bool SolutionFound
@@ -54,20 +57,20 @@ namespace Knights_Tour.Models
             }
         }
 
-        //        // function restricts the knight to remain within
-        //        // the NxN chessboard
+        // function restricts the knight to remain within
+        // the NxN chessboard
         private bool limits(int x, int y) 
         {
             return ((x >= 0 && y >= 0) && (x < chessBoardSize && y < chessBoardSize));
         }
 
-        //        /* Checks whether a square is valid and empty or not */
+        /* Checks whether a square is valid and empty or not */
         private bool isEmpty(int [,]a, int x, int y)
         {
             return (limits(x, y)) && (a[x,y] < 0);
         }
-        //        /* Returns the number of empty squares adjacent
-        //           to (x, y) */
+        /* Returns the number of empty squares adjacent
+           to (x, y) */
         private int getDegree(int [,] a, int x, int y)
         {
             int count = 0;
@@ -79,14 +82,14 @@ namespace Knights_Tour.Models
         }
 
 
-        //        // Picks next point using Warnsdorff's heuristic.
-        //        // Returns false if it is not possible to pick
-        //        // next point.
+        // Picks next point using Warnsdorff's heuristic.
+        // Returns false if it is not possible to pick
+        // next point.
         private bool nextMove(int[,] a, ref int x, ref int y)
         {
             int min_deg_idx = -1, c, min_deg = (chessBoardSize + 1), nx, ny;
 
-            // Try all N adjacent of (*x, *y) starting
+            // Try all N adjacent of (x, y) starting
             // from a random adjacent. Find the adjacent
             // with minimum degree.
             Random random = new Random();
@@ -123,10 +126,10 @@ namespace Knights_Tour.Models
         }
 
 
-        //        /* checks its neighbouring squares */
-        //        /* If the knight ends on a square that is one
-        //           knight's move from the beginning square,
-        //           then tour is closed */
+        /* checks its neighbouring squares */
+        /* If the knight ends on a square that is one
+           knight's move from the beginning square,
+           then tour is closed */
 
         private bool neighbour(int x, int y, int xx, int yy)
         {
@@ -137,8 +140,8 @@ namespace Knights_Tour.Models
             return false;
         }
 
-        //        /* Generates the legal moves using warnsdorff's
-        //          heuristics. Returns false if not possible */
+        /* Generates the legal moves using warnsdorff's
+          heuristics. Returns false if not possible */
         private bool findClosedTour()
         {
             cellNumber = 0;
@@ -148,10 +151,9 @@ namespace Knights_Tour.Models
                 for(int j = 0; j < chessBoardSize; j++) 
                     a[i,j] = -1;
 
-            // Random initial position
-            Random random = new Random();
-            int sx = random.Next(0, chessBoardSize);
-            int sy = random.Next(0, chessBoardSize);
+            // knight coordinates initial position
+            int sx = knight.CurrentPosition.X;
+            int sy = knight.CurrentPosition.Y;
 
             // Current points are same as initial points
             int x = sx, y = sy;
@@ -171,9 +173,9 @@ namespace Knights_Tour.Models
             return true;
         }
 
-        public async Task GetSolution()
+        public async Task GetSolution(CancellationToken cancellationToken)
         {
-            TimeSpan timeLimit = new TimeSpan(1, 0, 0);
+            TimeSpan timeLimit = new TimeSpan(0, 0, 0, chessBoardSize);
             Stopwatch sw = new Stopwatch();
 
             //reset solution
@@ -183,92 +185,24 @@ namespace Knights_Tour.Models
 
             sw.Start(); //start timer
 
-            while (!findClosedTour())
-            {
-                ToursTested++;
-                if (sw.Elapsed > timeLimit)
+                while (!findClosedTour())
                 {
-                    sw.Stop();
-                    solutionFound = false;
-                    return;
+                    if (cancellationToken.IsCancellationRequested)
+                        throw new TaskCanceledException();
+
+                    ToursTested++;
+                    if (sw.Elapsed > timeLimit)
+                    {
+                        sw.Stop();
+                        solutionFound = false;
+                        throw new TaskCanceledException();
+                    }
                 }
-            }
+
             solutionFound = true;
             sw.Stop();
         }
 
 
-        //        /* displays the chessboard with all the
-        //          legal knight's moves */
-        //        void print(int a[])
-        //        {
-        //            for (int i = 0; i < N; ++i)
-        //            {
-        //                for (int j = 0; j < N; ++j)
-        //                    printf("%d\t", a[j * N + i]);
-        //                printf("\n");
-        //            }
-        //        }
-
-        //        /* checks its neighbouring squares */
-        //        /* If the knight ends on a square that is one
-        //           knight's move from the beginning square,
-        //           then tour is closed */
-        //        bool neighbour(int x, int y, int xx, int yy)
-        //        {
-        //            for (int i = 0; i < N; ++i)
-        //                if (((x + cx[i]) == xx) && ((y + cy[i]) == yy))
-        //                    return true;
-
-        //            return false;
-        //        }
-
-        //        /* Generates the legal moves using warnsdorff's
-        //          heuristics. Returns false if not possible */
-        //        bool findClosedTour()
-        //        {
-        //            // Filling up the chessboard matrix with -1's
-        //            int a[N * N];
-        //            for (int i = 0; i < N * N; ++i)
-        //                a[i] = -1;
-
-        //            // Random initial position
-        //            int sx = rand() % N;
-        //            int sy = rand() % N;
-
-        //            // Current points are same as initial points
-        //            int x = sx, y = sy;
-        //            a[y * N + x] = 1; // Mark first move.
-
-        //            // Keep picking next points using
-        //            // Warnsdorff's heuristic
-        //            for (int i = 0; i < N * N - 1; ++i)
-        //                if (nextMove(a, &x, &y) == 0)
-        //                    return false;
-
-        //            // Check if tour is closed (Can end
-        //            // at starting point)
-        //            if (!neighbour(x, y, sx, sy))
-        //                return false;
-
-        //            print(a);
-        //            return true;
-        //        }
-
-        //        // Driver code
-        //        int main()
-        //        {
-        //            // To make sure that different random
-        //            // initial positions are picked.
-        //            srand(time(NULL));
-
-        //            // While we don't get a solution
-        //            while (!findClosedTour())
-        //            {
-        //                ;
-        //            }
-
-        //            return 0;
-        //        }
     }
 }
