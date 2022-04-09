@@ -34,7 +34,7 @@ namespace Knights_Tour.Controls
         public DynamicGrid()
         {
             img = new ImageBrush();
-            img.ImageSource = new BitmapImage(new Uri("D:\\University\\TPA\\KnightsTour\\Knights_Tour\\Knights_Tour\\Resources\\KnightIcon.bmp"));
+            img.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/KnightIcon.bmp"));
             img.Stretch = Stretch.Uniform;
         }
 
