@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Knights_Tour.Models
 {
-    public class Point : BaseModel
+    public class Point : BaseModel, IDisposable
     {
         private int x;
         private int y;
@@ -16,6 +16,12 @@ namespace Knights_Tour.Models
         {
             this.x = 0;
             this.y = 0; 
+        }
+        
+        public Point(Point p)
+        {
+            this.x = p.x;
+            this.y = p.y;
         }
 
         public Point(int x, int y)
@@ -45,7 +51,18 @@ namespace Knights_Tour.Models
             }
         }
 
-        
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            x = 0;
+            y = 0;
+        }
 
     }
 }

@@ -12,19 +12,18 @@ namespace Knights_Tour.ViewModels
 {
     public partial class MainWindowViewModel
     {
-        public async Task StartAlgorithm()
+        private async Task StartAlgorithmOnClick()
         {
             try
-            { 
+            {
                 if (IsExecuting)
                 {
                     IsExecuting = !IsExecuting;
                     cancelTokenSource.Cancel();
                     return;
                 }
-
-
                 IsExecuting = !IsExecuting;
+                TextBoxesEnabled = false;
                 if (IsExecuting)
                 {
                     m_warnsdorffAlgorithm = new WarnsdorffAlgorithmModel(ChessBoardSize, Knight);
@@ -37,6 +36,7 @@ namespace Knights_Tour.ViewModels
                     //await Task.Run (() => ShowSolution(solutionTour, cancelTokenSource.Token));
 
                     int count = 1;
+                    Knight.StartPosition = new Point(Knight.CurrentPosition);
                     Knight.IsMoving = true;
                     while (count != ChessBoardSize * ChessBoardSize)
                     {
@@ -52,13 +52,16 @@ namespace Knights_Tour.ViewModels
                                     KnightModel auxKnight = new KnightModel(Knight);
                                     Knight = auxKnight;
                                     count++;
-                                    await Task.Delay(200);
+                                    await Task.Delay(Speed);
+                                    if (cancelTokenSource.IsCancellationRequested)
+                                        throw new TaskCanceledException();
                                 }
                             }
                         }
-                        if (cancelTokenSource.IsCancellationRequested)
-                            throw new TaskCanceledException();
                     }
+
+
+                    Knight.IsMoving = false;
                     NeedsReset = true;
                     IsExecuting = false;
                     CommandManager.InvalidateRequerySuggested();
@@ -66,6 +69,7 @@ namespace Knights_Tour.ViewModels
             } 
             catch (TaskCanceledException)
             {
+                Knight.IsMoving = false;
                 NeedsReset = true;
                 IsExecuting = false;
                 TimeElapsed.Stop();
@@ -75,40 +79,63 @@ namespace Knights_Tour.ViewModels
                 
         }
 
-        public async Task ShowSolution(int[,] solutionTour, CancellationToken cancellationToken)
+        private void RestartTourOnClick() 
         {
-            int count = 1;
-            Knight.IsMoving = true;
-            while (count != ChessBoardSize * ChessBoardSize)
+            if (m_warnsdorffAlgorithm.SolutionTour == null)
+                return;
+
+            RestartTourRequested = true;
+            CleanChessBoardOnClick();
+
+        }
+
+        private void CleanChessBoardOnClick()
+        {
+            if (RestartTourRequested)
             {
-                for (int i = 0; i < solutionTour.GetLength(0); i++)
-                {
-                    for (int j = 0; j < solutionTour.GetLength(1); j++)
-                    {
-                        if (solutionTour[i, j] == count)
-                        {
-                            Knight.SetPreviousPosition();
-                            Knight.CurrentPosition.X = i;
-                            Knight.CurrentPosition.Y = j;
-                            KnightModel auxKnight = new KnightModel(Knight);
-                            Knight = auxKnight;
-                            count++;
-                            await Task.Delay(200);
-                        }
-                    }
-                }
-                if (cancellationToken.IsCancellationRequested)
-                    throw new TaskCanceledException();
+                RestartTourRequested = false;
+                Knight.SetToStartPosition();
+                //trigger knight change (not good practice)
+                KnightModel auxKnight = new KnightModel(Knight);
+                Knight = auxKnight;
+                this.StartAlgorithmCommand.Execute(null);
+            }
+            else
+            {
+                KnightX = "1";
+                KnightY = "A";
+                Knight.Reset();
+                KnightModel auxKnight = new KnightModel(Knight);
+                Knight = auxKnight;
+                NeedsReset = false;
+                TextBoxesEnabled = true;
             }
         }
 
-        public void timeElapsedTick(object sender, EventArgs e)
+
+        private async Task ChangeSpeedOnClick()
+        {
+            switch (Speed)
+            {
+                case 1:
+                    Speed = 1000;
+                    break;
+                case 500:
+                    Speed = 1;
+                    break;
+                case 1000:
+                    Speed = 500;
+                    break;
+            }
+        }
+
+        private void timeElapsedTick(object sender, EventArgs e)
         {
             TimeElapsedString = Convert.ToString((DateTime.Now - startTime).TotalMilliseconds);
             CommandManager.InvalidateRequerySuggested();
         }
 
-        public bool CanStartAlgorithm()
+        private bool CanStartAlgorithm()
         {
             bool ChessBoardSizeValid = (ChessBoardSize > 4 && ChessBoardSize < 17);
 
@@ -119,7 +146,7 @@ namespace Knights_Tour.ViewModels
             return ChessBoardSizeValid && knightXValid && KnightYValid; 
         }
 
-        public bool validRow(string row)
+        private bool validRow(string row)
         {
             int intRow = 0;
             bool parseSuccesful = Int32.TryParse(row, out intRow);
@@ -133,7 +160,7 @@ namespace Knights_Tour.ViewModels
 
         }
 
-        public bool validColumn(string column)
+        private bool validColumn(string column)
         {
             char charColumn;
             bool parseSuccesful = Char.TryParse(column.ToUpper(), out charColumn);

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Knights_Tour"
+        xmlns:converters="clr-namespace:Knights_Tour.Converters"
         xmlns:controls ="clr-namespace:Knights_Tour.Controls"
         xmlns:validation="clr-namespace:Knights_Tour.ValidationRules"
         mc:Ignorable="d"
@@ -17,7 +18,14 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Name ="mainWindow"
         Title="Knights Tour Simulator" Height="650" Width="1000"
-        ResizeMode="CanMinimize">
+        ResizeMode="CanMinimize"
+        Icon="pack://application:,,,/Resources/WindowIcon.png">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <converters:SpeedToIconConverter x:Key="SpeedToIconConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -51,7 +59,7 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
@@ -63,7 +71,8 @@
                                VerticalAlignment="Center"/>
                 <TextBox Width="100" Height="30" Margin="10,0,0,0"
                      materialDesign:HintAssist.HelperTextFontSize="8"
-                     TextAlignment="Center">
+                     TextAlignment="Center"
+                     IsEnabled="{Binding TextBoxesEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <TextBox.Text>
                         <Binding Path="ChessBoardSize"
                                  UpdateSourceTrigger="PropertyChanged"
@@ -81,7 +90,8 @@
             <StackPanel Grid.Row="4" Margin ="30,0,0,0" Orientation="Horizontal">
                 <TextBlock Text="Row:" VerticalAlignment="Center"></TextBlock>
                 <TextBox Width="50" Height="30" Margin="10,0,0,0"
-                         materialDesign:HintAssist.HelperTextFontSize="8">
+                         materialDesign:HintAssist.HelperTextFontSize="8"
+                         IsEnabled="{Binding TextBoxesEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <TextBox.Resources>
                         <validation:BindingProxy Data="{Binding}" x:Key="proxy"/>
                     </TextBox.Resources>
@@ -108,7 +118,8 @@
                 </TextBox>
                 <TextBlock Text="Column:" VerticalAlignment="Center"></TextBlock>
                 <TextBox Width="50" Height="30" Margin="10,0,0,0"
-                         materialDesign:HintAssist.HelperTextFontSize="8">
+                         materialDesign:HintAssist.HelperTextFontSize="8"
+                         IsEnabled="{Binding TextBoxesEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <TextBox.Resources>
                         <validation:BindingProxy Data="{Binding}" x:Key="proxy"/>
                     </TextBox.Resources>
@@ -132,11 +143,44 @@
                     </materialDesign:HintAssist.Hint>
                 </TextBox>
             </StackPanel>
-            <StackPanel Grid.Row="6" Margin="30,0,0,0" Orientation="Horizontal" >
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" >
                 <Button Width="150" Height="50"
                     Content ="{Binding ExecuteButtonContent, UpdateSourceTrigger=PropertyChanged, Mode =TwoWay}"
                     Background="{Binding ExecuteButtonColour, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                     Command="{Binding StartAlgorithmCommand}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button
+                    Height="50" Width="50" Margin="0,0,30,0"
+                    Style="{StaticResource MaterialDesignFloatingActionSecondaryLightButton}"
+                    ToolTip="MaterialDesignFloatingActionSecondaryLightButton"
+                    Command="{Binding ChangeSpeedCommand}">
+                    <Button.Content>
+                        <materialDesign:PackIcon Kind="{Binding Speed, Converter={StaticResource SpeedToIconConverter}}"
+                                                 Height="36" Width="36"/>
+                    </Button.Content>
+                    
+                </Button>
+                <Button
+                    Height="50" Width="50" Margin="0,0,30,0"
+                    Style="{StaticResource MaterialDesignFloatingActionSecondaryLightButton}"
+                    ToolTip="MaterialDesignFloatingActionSecondaryLightButton"
+                    Command="{Binding RestartTourCommand}">
+                    <materialDesign:PackIcon
+                    Kind="Restart"
+                    Height="36"
+                    Width="36" />
+                </Button>
+                <Button
+                    Height="50" Width="50"
+                    Style="{StaticResource MaterialDesignFloatingActionSecondaryLightButton}"
+                    ToolTip="MaterialDesignFloatingActionSecondaryLightButton"
+                    Command="{Binding CleanChessBoardCommand}">
+                    <materialDesign:PackIcon
+                    Kind="Shimmer"
+                    Height="36"
+                    Width="36" />
+                </Button>
             </StackPanel>
             <StackPanel Grid.Row="8" Margin="30,0,0,0" Orientation ="Horizontal" >
                 <TextBlock Text="Time Elapsed:" VerticalAlignment="Center"></TextBlock>

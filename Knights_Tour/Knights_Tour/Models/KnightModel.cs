@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Knights_Tour.Models
 {
-    public class KnightModel : BaseModel
+    public class KnightModel : BaseModel, IDisposable
     {
+        private Point startPosition;
         private Point currPosition;
         private Point previousPosition;
         private bool isMoving;
@@ -18,14 +19,26 @@ namespace Knights_Tour.Models
         {
             this.currPosition = currPosition;
             previousPosition = new Point(0,0);
-            
         }
 
         public KnightModel(KnightModel knight)
         {
+            this.startPosition = knight.startPosition;
             this.currPosition = knight.currPosition;
             this.previousPosition = knight.previousPosition;
             this.isMoving = knight.isMoving;
+        }
+
+
+
+        public Point StartPosition
+        {
+            get => startPosition;
+            set
+            {
+                startPosition = value;
+                OnPropertyChanged();
+            }
         }
 
         public Point CurrentPosition{
@@ -61,6 +74,40 @@ namespace Knights_Tour.Models
         {
             PreviousPosition.X = CurrentPosition.X;
             PreviousPosition.Y = CurrentPosition.Y;
+        }
+
+        public void SetToStartPosition()
+        {
+            if (StartPosition == null)
+                return;
+            CurrentPosition.X = StartPosition.X;
+            CurrentPosition.Y = StartPosition.Y;
+            SetPreviousPosition();
+        }
+
+        public void Reset()
+        {
+            CurrentPosition.X = 0;
+            CurrentPosition.Y = 0;
+            PreviousPosition = new Point(0,0);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                startPosition.Dispose();
+                previousPosition.Dispose();
+                CurrentPosition.Dispose();
+
+            }
+
         }
     }
 }

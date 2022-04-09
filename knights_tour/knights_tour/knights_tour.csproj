@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\Paul\OneDrive - Universitatea Politehnica Timisoara\Unrelated\Desktop\KnightIcon.bmp" Link="KnightIcon.bmp" />
+    <None Remove="Resources\WindowIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\WindowIcon.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -25,14 +25,17 @@ namespace Knights_Tour.ViewModels
         private SolidColorBrush m_executeButtonColor = Brushes.DarkGreen;
         private CellCollectionModel m_cellCollection;
         private WarnsdorffAlgorithmModel m_warnsdorffAlgorithm;
-        public DateTime startTime = DateTime.Now;
-        public DispatcherTimer m_timeElapsed;
-        public String m_timeElapsedString = "0";
-        public KnightModel m_knight;
-        public String m_knightX = "1";
-        public String m_knightY = "A";
-        public Boolean m_NeedsReset = false;
-        CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        private DateTime startTime = DateTime.Now;
+        private DispatcherTimer m_timeElapsed;
+        private String m_timeElapsedString = "0";
+        private KnightModel m_knight;
+        private String m_knightX = "1";
+        private String m_knightY = "A";
+        private Boolean m_needsReset = false;
+        private Boolean m_textBoxesEnabled = true;
+        private Boolean m_restartTourRequested = false;
+        private CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        private Int16 m_speed = 1000;
 
         public KnightModel Knight
         {
@@ -213,10 +216,30 @@ namespace Knights_Tour.ViewModels
 
         public Boolean NeedsReset
         {
-            get => m_NeedsReset;
+            get => m_needsReset;
             set
             {
-                m_NeedsReset = value;
+                m_needsReset = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Boolean TextBoxesEnabled
+        {
+            get => m_textBoxesEnabled;
+            set
+            {
+                m_textBoxesEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Boolean RestartTourRequested
+        {
+            get => m_restartTourRequested;
+            set
+            {
+                m_restartTourRequested = value;
                 OnPropertyChanged();
             }
         }
@@ -231,6 +254,16 @@ namespace Knights_Tour.ViewModels
             set
             {
                 m_cellCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Int16 Speed
+        {
+            get => m_speed;
+            set
+            {
+                m_speed = value;
                 OnPropertyChanged();
             }
         }
