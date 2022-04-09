@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "A/FbmTwEb3tZ4EyJNf7ct+1l9vtbDI698H1ptbI3u+1zqktkK6At09bWKdo8CtX3H23V6GCgSu4ngFWulcYJBA==",
+  "success": true,
+  "projectFilePath": "D:\\University\\TPA\\KnightsTour\\Knights_Tour\\Knights_Tour\\Knights_Tour.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Paul\\.nuget\\packages\\materialdesigncolors\\2.0.4\\materialdesigncolors.2.0.4.nupkg.sha512",
+    "C:\\Users\\Paul\\.nuget\\packages\\materialdesignthemes\\4.3.0\\materialdesignthemes.4.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}
