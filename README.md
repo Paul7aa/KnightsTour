@@ -16,6 +16,6 @@ In the following image, the knight will select the cell with least possibilities
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/Paul7aa/KnightTour/blob/main/githubimages/Screenshot1.png)
+![Screenshot 1](/githubimages/Screenshot1.png)
 
-![Screenshot 2](https://github.com/Paul7aa/KnightTour/blob/main/githubimages/Screenshot2.png)
+![Screenshot 2](/githubimages/Screenshot2.png)
