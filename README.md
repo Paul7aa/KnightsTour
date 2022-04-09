@@ -10,3 +10,6 @@ GIF showing the Knight's Tour example on a 8x8 board:
 
 ## Warnsdorff's Rule
 Warnsdorff's rule is a heuristic for finding a single knight's tour. The knight is moved so that it always proceeds to the square from which the knight will have the fewest onward moves. When calculating the number of onward moves for each candidate square, we do not count moves that revisit any square already visited. It is possible to have two or more choices for which the number of onward moves is equal
+In the following image, the knight will select the cell with least possibilities (the cell containing 2).
+
+![Warnsdorffs Rule png](https://github.com/Paul7aa/KnightsTour/blob/main/WarnsdorffsRule.png)
