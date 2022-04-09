@@ -10,6 +10,7 @@ namespace Knights_Tour.Models
 {
     public class KnightModel : BaseModel, IDisposable
     {
+        private Int32 cellsCrossed;
         private Point startPosition;
         private Point currPosition;
         private Point previousPosition;
@@ -17,6 +18,7 @@ namespace Knights_Tour.Models
 
         public KnightModel(Point currPosition)
         {
+
             this.currPosition = currPosition;
             previousPosition = new Point(0,0);
         }
@@ -27,9 +29,18 @@ namespace Knights_Tour.Models
             this.currPosition = knight.currPosition;
             this.previousPosition = knight.previousPosition;
             this.isMoving = knight.isMoving;
+            this.cellsCrossed = knight.cellsCrossed;
         }
 
-
+        public Int32 CellsCrossed
+        {
+            get => cellsCrossed;
+            set
+            {
+                cellsCrossed = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Point StartPosition
         {
@@ -47,6 +58,7 @@ namespace Knights_Tour.Models
             {
                 currPosition = value;
                 OnPropertyChanged();
+               
             }
         }
 

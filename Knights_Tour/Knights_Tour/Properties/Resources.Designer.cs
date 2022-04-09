@@ -73,6 +73,16 @@ namespace Knights_Tour.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] TheKnightsTourTitle {
+            get {
+                object obj = ResourceManager.GetObject("TheKnightsTourTitle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] WindowIcon {
             get {
                 object obj = ResourceManager.GetObject("WindowIcon", resourceCulture);

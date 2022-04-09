@@ -35,7 +35,7 @@ namespace Knights_Tour.ViewModels
 
                     //await Task.Run (() => ShowSolution(solutionTour, cancelTokenSource.Token));
 
-                    int count = 1;
+                    Int32 count = 1;
                     Knight.StartPosition = new Point(Knight.CurrentPosition);
                     Knight.IsMoving = true;
                     while (count != ChessBoardSize * ChessBoardSize)
@@ -49,12 +49,16 @@ namespace Knights_Tour.ViewModels
                                     Knight.SetPreviousPosition();
                                     Knight.CurrentPosition.X = i;
                                     Knight.CurrentPosition.Y = j;
+                                    Knight.CellsCrossed = count;
                                     KnightModel auxKnight = new KnightModel(Knight);
                                     Knight = auxKnight;
-                                    count++;
                                     await Task.Delay(Speed);
+
                                     if (cancelTokenSource.IsCancellationRequested)
                                         throw new TaskCanceledException();
+
+                                    count++;
+                                    continue;
                                 }
                             }
                         }

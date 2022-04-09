@@ -121,6 +121,9 @@
   <data name="KnightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\KnightIcon.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="TheKnightsTourTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TheKnightsTourTitle.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="WindowIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WindowIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

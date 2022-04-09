@@ -8,10 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\TheKnightsTourTitle.png" />
     <None Remove="Resources\WindowIcon.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\TheKnightsTourTitle.png" />
     <Resource Include="Resources\WindowIcon.png" />
   </ItemGroup>
 

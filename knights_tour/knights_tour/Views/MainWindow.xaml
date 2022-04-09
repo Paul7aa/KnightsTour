@@ -52,8 +52,8 @@
 
         <Grid Grid.Column="2" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
@@ -66,6 +66,10 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0">
+                <Image Source="pack://application:,,,/Resources/TheKnightsTourTitle.png"
+                        Height= "125" Width="300"/>
+            </StackPanel>
             <StackPanel Grid.Row="2" Margin="30,0,0,0" Orientation="Horizontal">
                 <TextBlock Text="Chess Board Size: " 
                                VerticalAlignment="Center"/>
@@ -182,9 +186,9 @@
                     Width="36" />
                 </Button>
             </StackPanel>
-            <StackPanel Grid.Row="8" Margin="30,0,0,0" Orientation ="Horizontal" >
-                <TextBlock Text="Time Elapsed:" VerticalAlignment="Center"></TextBlock>
-                <TextBlock Margin=" 10,0,0,0" Width="200" 
+            <StackPanel Grid.Row="8" Margin="30,0,0,0" Orientation ="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Time Elapsed:" VerticalAlignment="Center" Margin="-10,0,0,0"/>
+                <TextBlock Margin=" 10,0,0,0" Width="50" 
                            VerticalAlignment="Center"
                            TextAlignment="Center"
                            Text="{Binding Path= TimeElapsedString, 

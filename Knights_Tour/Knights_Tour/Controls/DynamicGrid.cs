@@ -27,10 +27,10 @@ namespace Knights_Tour.Controls
             DependencyProperty.Register("Knight", typeof(KnightModel), typeof(DynamicGrid), new PropertyMetadata(null, KnightChanged));
 
         public static readonly DependencyProperty NeedsResetProperty =
-            DependencyProperty.Register("NeedsReset", typeof(Boolean), typeof(DynamicGrid), new PropertyMetadata(true, NeedsResetChanged));
+            DependencyProperty.Register("NeedsReset", typeof(Boolean), typeof(DynamicGrid), new PropertyMetadata(true));
 
         private ImageBrush img;
-
+        private Int16 count;
         public DynamicGrid()
         {
             img = new ImageBrush();
@@ -136,9 +136,17 @@ namespace Knights_Tour.Controls
                         newRectangle.Stroke = new SolidColorBrush(Colors.Black);
                         newRectangle.StrokeThickness = 1;
                     }
-                    grid.Children.Add(newRectangle);
-                    Grid.SetRow(newRectangle, i);
-                    Grid.SetColumn(newRectangle, j);
+
+                    //create grid for each cell and add rectangle
+                    Grid newGrid = new Grid();
+                    newGrid.Children.Add(newRectangle);
+                    Grid.SetRow(newRectangle, 0);
+                    Grid.SetColumn(newRectangle, 0);
+
+                    //add grid to main grid
+                    grid.Children.Add(newGrid);
+                    Grid.SetRow(newGrid, i);
+                    Grid.SetColumn(newGrid, j);
                 }
             }
         }
@@ -165,23 +173,44 @@ namespace Knights_Tour.Controls
                     {
                         for (int j = 0; j < grid.RowsColumns; j++)
                         {
-                            if(x == i && y == j)
-                            {
-                                var element = grid.Children.Cast<UIElement>().
-                                    FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
-
-                                if(element!=null)
-                                    ((Rectangle)element).Fill = grid.img;
-
-                            }
-
-                            if(px == i && py == j)
+                            if (x == i && y == j)
                             {
                                 var element = grid.Children.Cast<UIElement>().
                                     FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
 
                                 if (element != null)
-                                    ((Rectangle)element).Fill = new SolidColorBrush(Colors.GreenYellow);
+                                {
+
+                                    var rectangle = ((Grid)element).Children.Cast<UIElement>()
+                                        .First(e => Grid.GetRow(e) == 0 && Grid.GetColumn(e) == 0);
+
+                                    ((Rectangle)rectangle).Fill = grid.img;
+
+                                }
+                            }
+
+                            if (px == i && py == j)
+                            {
+                                var element = grid.Children.Cast<UIElement>().
+                                    FirstOrDefault(e => Grid.GetColumn(e) == j && Grid.GetRow(e) == i);
+
+                                if (element != null)
+                                {
+                                    var rectangle = ((Grid)element).Children.Cast<UIElement>()
+                                        .First(e => Grid.GetRow(e) == 0 && Grid.GetColumn(e) == 0);
+
+                                    ((Rectangle)rectangle).Fill = new SolidColorBrush(Colors.GreenYellow);
+
+                                    TextBlock newTextBlock = new TextBlock();
+                                    newTextBlock.Text = grid.Knight.CellsCrossed.ToString();
+                                    newTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+                                    newTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                                    newTextBlock.VerticalAlignment = VerticalAlignment.Center;
+                                    ((Grid)element).Children.Add(newTextBlock);
+                                    Grid.SetRow(element, 0);
+                                    Grid.SetColumn(element, 0);
+
+                                }
                             }
                         }
                     }
@@ -203,10 +232,6 @@ namespace Knights_Tour.Controls
                 }
                 CellCollectionChanged(grid, e);
             }
-        }
-
-        private static void NeedsResetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
         }
     }
 }
