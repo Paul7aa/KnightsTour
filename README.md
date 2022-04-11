@@ -33,3 +33,5 @@ Source: https://en.wikipedia.org/wiki/Model–view–viewmodel
 ![Screenshot 1](/githubimages/Screenshot1.png)
 
 ![Screenshot 2](/githubimages/Screenshot2.png)
+
+![Start Tour GIF](/githubimages/StartTour.gif)
