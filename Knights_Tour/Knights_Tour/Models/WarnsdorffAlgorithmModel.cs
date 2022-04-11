@@ -130,7 +130,6 @@ namespace Knights_Tour.Models
         /* If the knight ends on a square that is one
            knight's move from the beginning square,
            then tour is closed */
-
         private bool neighbour(int x, int y, int xx, int yy)
         {
             for (int i = 0; i < 8; i++)
