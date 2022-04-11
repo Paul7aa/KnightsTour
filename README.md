@@ -6,7 +6,13 @@ Application created in C# using WPF framework and MVVM architectural pattern to 
 A knight's tour is a sequence of moves of a knight on a chessboard such that the knight visits every square exactly once. If the knight ends on a square that is one knight's move from the beginning square (so that it could tour the board again immediately, following the same path), the tour is closed (or re-entrant); otherwise, it is open.
 GIF showing the Knight's Tour example on a 8x8 board:
 
-![Knights Tour Gif](/githubimages/Knights-Tour-Animation.gif)
+![Knights Tour Gif](/githubimages/Knights-Tour-Animation.gif){
+    display: block;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
 
 ![Tours_Count](/githubimages/TourCount.png)
 
