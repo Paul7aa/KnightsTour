@@ -21,7 +21,7 @@ Model–view–viewmodel (MVVM) is a software architectural pattern that facilit
 
 Source: https://en.wikipedia.org/wiki/Model–view–viewmodel
 
-##Algorithm code
+## Algorithm code
 
 ![Algorithm1](/githubimages/Algorithm1.png)
 ![Algorithm2](/githubimages/Algorithm2.png)
