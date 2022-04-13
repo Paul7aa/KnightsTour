@@ -24,9 +24,9 @@ Source: https://en.wikipedia.org/wiki/Model–view–viewmodel
 ##Algorithm code
 
 ![Algorithm1](/githubimages/Algorithm1.png)
-![Algorithm2](/githubimages/Algorithm1.png)
-![Algorithm3](/githubimages/Algorithm1.png)
-![Algorithm4](/githubimages/Algorithm1.png)
+![Algorithm2](/githubimages/Algorithm2.png)
+![Algorithm3](/githubimages/Algorithm3.png)
+![Algorithm4](/githubimages/Algorithm4.png)
 
 ## Screenshots
 
